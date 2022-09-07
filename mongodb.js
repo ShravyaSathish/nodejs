@@ -108,5 +108,38 @@ MongoClient.connect(connectionURL, { useNewUrlParser:true }, (error, client)=>{
     }).catch((error)=>{
         console.log(error)
     })
+
+    //$in
+    db.collection('Users').find({name: {$in: ['karthik']}}).toArray((error, Users)=>{
+        if(error){
+            console.log('Unable to fetch the document')
+        }
+        console.log(Users)
+    })
+
+    //$in
+    const updatein = db.collection('Users').update({name:{$in:['karthik']}},
+    {$set:{
+        age:23
+    }}
+    )
+    updatein.then((result)=>{
+        console.log(result)
+    }).catch((error)=>{
+        console.log(error)
+    })
+
+    //$unset
+    const updateUnset = db.collection('Users').update({name:'Karthik'},{
+        $unset:{
+            age:23
+        }
+    })
+    updateUnset.then((result)=>{
+        console.log(result)
+    }).catch((error)=>{
+        console.log(error)
+    })
+
     
 })
