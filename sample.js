@@ -61,3 +61,9 @@ yargs.command({
     }
 })
 console.log(yargs.argv)
+
+
+const array = [1, 2, 5, 6, 7]
+console.log(array.flat())
+const array1 = [1, 3, 4,[[2,3]]]
+console.log(array1.flat(2))

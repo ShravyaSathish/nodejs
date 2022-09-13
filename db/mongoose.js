@@ -1,10 +1,9 @@
 const { ObjectId } = require('mongodb');
 const mongoose = require('mongoose');
 const { array } = require('yargs');
-mongoose.connect('mongodb://localhost:27017/test1')
+mongoose.connect('mongodb://localhost:27017/test2')
 
 const { Schema } = mongoose;
-
 const userSchema = new Schema({
     firstName:{
         type: String,
@@ -33,14 +32,18 @@ const userSchema = new Schema({
       address:{
         type: String,
         required: true,
+        max: 2
       } 
     }],   
 })
 
-const User = mongoose.model('User1', userSchema)
+const User = mongoose.model('User2', userSchema)
+
+
+//Inserting Document
 const user = new User({
-    firstName:'ABCDFSG',
-    lastName:"salian",
+    firstName:'keerthika',
+    lastName:"nayak",
     phoneNumber:4561781444,
     dateOfbirth:"18/11/2000",
     email:"thanush@gmail.com",
@@ -55,73 +58,43 @@ user.save().then(()=>{
     console.log(error)
 })
 
-
-// User.findOneAndUpdate({firstName:"Preksha"},{$push:{address:"syuuh"}
-// },(error, User1)=>{
-//     if(error){
-//         console.log('error')
-//     }
-//     console.log(User1)
-// })
-
-
-
-// User.findOne({firstName:"Shreya"},(error, User1)=>{
-//     if(error){
-//         console.log('Unable to fetch')
-//     }
-//     console.log(User1)
-// })
-
-
-
-// User.updateOne({firstName: "ABCDFSG"}, {$push: {mainaddress:{address: "Harry"}}}, {runValidators:true}, (error, User1)=>{
-//     if(error){
-//         console.log(error)
-//     }
-//     console.log(User1)
-// })
-
-// // const count = User.find({ user:req.User1._id}).count()
-// // if(count>5){
-// //     res.status(400).send('Maximum limit Recahed')
-// // }
-// // console.log(user.req.User1)
-
-
-// User.deleteOne({
-//     lastName: "poojaryy"
-// }).then((result)=>{
-//     console.log(result)
-// }).catch((error)=>{
-//     console.log(error)
-// })
-
-
-//populate
-const postSchema = new Schema({
-    title:'String',
+//update - inserting multiple address
+User.updateOne({firstName: "keerthika"}, {$push: {mainaddress:{address: "puhur"}}}, (error, User2)=>{
+    if(error){
+        console.log(error)
+    }
+    console.log(User2)
 })
-const Post = mongoose.model('posts', postSchema);
-const post = new Post({
-    title:'sghhjhjh',
+
+//Update Address - deleting address
+User.updateOne({firstName:"keerthika"}, {$pull:{mainaddress:{address:"puhur"}}},(error, User2)=>{
+    if(error){
+        console.log(error)
+    }
+    console.log(User2)
 })
-post.save()
-Post.find().populate("postedby").then(p=>console.log(p)).catch(error=>console.log(error));
 
+// //DeleteOne document
+User.deleteOne({
+    lastName: "salian"
+}).then((result)=>{
+    console.log(result)
+}).catch((error)=>{
+    console.log(error)
+})
 
+// //findOne
+User.find({firstName:'Shravya'}).then((error,User2)=>{
+    if(error){
+        console.log(error)
+    }
+    console.log(User2)
+})
 
-// const post = new Post(
-//     {
-//         title:'shravyartu'
-//     }
-// )
-
-// post.save()
-// Post.find()
-// .populate("postedBy")
-// .then(p=>console.log(p))
-// .catch(error=>console.log(error));
-
-
-
+//deleting document by id
+User.findByIdAndDelete({_id: new ObjectId('6320682339a0cbe0a45f8b79')}, (error, User2)=>{
+    if(error){
+        console.log(error)
+    }
+    console.log(User2)
+})

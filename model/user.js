@@ -1,4 +1,5 @@
 const validateDate = require('validate-date')
+const mongoose = require('mongoose')
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
@@ -26,12 +27,19 @@ const userSchema = new Schema({
     email:{
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim: true,
+        lowercase:true,
+        validate(value){
+            if(!validator.isEmail(value)){
+                throw new Error('Invalid Email! Please Enter valid Email')
+            }
+        }
     },
     password:{
         type: String,
         required: true,
-        unique: true
+        //unique: true
     },
     mainaddress:[{
       address:{
@@ -39,10 +47,26 @@ const userSchema = new Schema({
         required: true
       }  
     }],
-    maxaddress:{
-      type: Number
-    }   
+     
 })
 
-const User = mongoose.model('User', userSchema)
-module.exports = User
+const User = mongoose.model('User1', userSchema)
+//module.exports = User
+
+const user = new User({
+    firstName:'Shreya',
+    lastName:"poojaryy",
+    phoneNumber:4561789345,
+    dateOfbirth:"24/08/1990",
+    email:"shreya@gmail.com",
+    password:"ertyui",
+    mainaddress:[{
+        address:"mangalore"
+    }]
+})
+
+user.save().then(()=>{
+    console.log(user)
+}).catch((error)=>{
+    console.log(error)
+})

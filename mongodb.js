@@ -31,13 +31,13 @@ MongoClient.connect(connectionURL, { useNewUrlParser:true }, (error, client)=>{
         name:'Surya',
         age:21
     },{
-        name:'jack',
-        age:22
-    },
-    {
-        name:'seni',
-        age:45
+        name:'sathish',
+        age:51
+    },{
+        name:'meghana',
+        age:34
     }
+
     ], (error, result)=>{
         if(error){
             return console.log('Unable to insert')
@@ -65,6 +65,26 @@ MongoClient.connect(connectionURL, { useNewUrlParser:true }, (error, client)=>{
         }
         console.log(Users) 
     })
+
+    db.collection('Users').find({age:{$gt:15}}).toArray((error, Users)=>{
+        if(error){
+            console.log('Unable to fetch')
+        }
+        console.log(Users)
+    })
+
+
+    // const q = {name:/^karthik/}
+    // db.collection('Users').find({q}).toArray((error, Users)=>{
+    //     if(error){
+    //         console.log(error)
+    //     }
+    //     console.log(Users)
+    // }
+
+
+
+
     //findOneAndDelete - deleting single document
      db.collection('User').findOneAndDelete({age:22},(error, User)=>{
         if(error){
@@ -107,6 +127,12 @@ MongoClient.connect(connectionURL, { useNewUrlParser:true }, (error, client)=>{
         console.log(error)
     })
 
+
+    //Create index
+    db.collection('Users').createIndex({name: 1, age: -1})
+
+
+
     //$in
     db.collection('Users').find({name: {$in: ['karthik']}}).toArray((error, Users)=>{
         if(error){
@@ -127,6 +153,22 @@ MongoClient.connect(connectionURL, { useNewUrlParser:true }, (error, client)=>{
         console.log(error)
     })
 
+    //$gt - compares two value and returns
+    db.collection('Users').find({age:{$gt:30}}).toArray((error , Users)=>{
+        if(error){
+            console.log(error)
+        }
+        console.log(Users)
+    })
+
+    //$it - lesser than
+    db.collection('Users').find({age:{$lt:30}}).toArray((error, Users)=>{
+        if(error){
+            console.log(error)
+        }
+        console.log(Users)
+    })
+
     //$unset
     const updateUnset = db.collection('Users').update({name:'Karthik'},{
         $unset:{
@@ -138,4 +180,23 @@ MongoClient.connect(connectionURL, { useNewUrlParser:true }, (error, client)=>{
     }).catch((error)=>{
         console.log(error)
     })
+
+    //db.collection('Users').update({_id:1}, {$max:{age:15}})
+    // const q = {name:/^karthik/}
+    // db.collection('Users').find({q}).toArray((error, Users)=>{
+    //     if(error){
+    //         console.log(error)
+    //     }
+    //     console.log(Users)
+    // }
+
+    db.collection('Users').createIndex({name:'text'})
+
+    db.collection('Users').find({$text:{$search: "karthik"}}).toArray((error, Users)=>{
+        if(error){
+            console.log('error')
+        }
+        console.log(Users)
+    })
+
 })
