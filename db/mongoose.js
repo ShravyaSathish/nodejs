@@ -32,25 +32,28 @@ const userSchema = new Schema({
       address:{
         type: String,
         required: true,
-        max: 2
-      } 
-    }],   
+        validate: [arrayLimit, ' exceeds the limit of 10']
+      },
+   
+    }],    
 })
 
+function arrayLimit(mainaddress) {
+    return mainaddress.length <3;
+}
+
 const User = mongoose.model('User2', userSchema)
-
-
 //Inserting Document
 const user = new User({
-    firstName:'keerthika',
-    lastName:"nayak",
+    firstName:'saniya',
+    lastName:"salian",
     phoneNumber:4561781444,
     dateOfbirth:"18/11/2000",
-    email:"thanush@gmail.com",
+    email:"karthik@gmail.com",
     password:"eyuioj",
     mainaddress:[{
-        address:"pan" 
-    }]
+        address:"dairyy" 
+    }],
 })
 user.save().then(()=>{
     console.log(user)
@@ -58,8 +61,9 @@ user.save().then(()=>{
     console.log(error)
 })
 
+
 //update - inserting multiple address
-User.updateOne({firstName: "keerthika"}, {$push: {mainaddress:{address: "puhur"}}}, (error, User2)=>{
+User.updateOne({firstName: "saniya"}, {$push: {mainaddress:{address: "puhur"}}},{new: true}, (error, User2)=>{
     if(error){
         console.log(error)
     }
@@ -83,7 +87,7 @@ User.deleteOne({
     console.log(error)
 })
 
-// //findOne
+//findOne
 User.find({firstName:'Shravya'}).then((error,User2)=>{
     if(error){
         console.log(error)
@@ -95,6 +99,26 @@ User.find({firstName:'Shravya'}).then((error,User2)=>{
 User.findByIdAndDelete({_id: new ObjectId('6320682339a0cbe0a45f8b79')}, (error, User2)=>{
     if(error){
         console.log(error)
+    }
+    console.log(User2)
+})
+
+//Updating single address
+User.updateOne({'mainaddress._id':"6321ac5fb56a476a21133e44"},{
+    $set: {
+        'mainaddress.$.address': "xhjsjk"}}
+    ,(error, User2)=>{
+    if(error){
+        console.log('Error')
+    }
+    console.log(User2)
+});
+
+//Delete one address
+const _id =  ObjectId("6321ac5fb56a476a21133e43")
+User.findByIdAndUpdate(_id , {$pull:{'mainaddress':{_id:'6321ac89ac63cc37d75e4d94'}}},(error, User2)=>{
+    if(error){
+        console.log('Error')
     }
     console.log(User2)
 })
