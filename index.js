@@ -1,3 +1,4 @@
+//javascript
 //DECLARING STUDENT CLASS
 const Student = class {
     constructor(Name, Usn,Mark1, Mark2, Mark3){
@@ -48,22 +49,6 @@ const Collage = class {
     } 
 }
 const Collage1 = new Collage()
-
-
-// const University = class {
-//     constructor(Universit = Collage){
-//        return Universit.sendDetails
-//     }
-    
-// }
-// const University1 = new University()
-// console.log(University.Universit)
-
-
-
-
-
-//console.log(Collage.getStudentMarks)
 
 
 
